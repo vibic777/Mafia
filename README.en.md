@@ -2,6 +2,9 @@
 
 [Русский](README.md) · **English**
 
+**License:** [PolyForm Noncommercial 1.0.0](LICENSE). Noncommercial use is allowed. Commercial use requires a separate agreement with vibic777.
+
+
 The idea goes back to school: a Mafia game people could play together over the network. This is an early MVP, a place to test how that game should actually work. The goal is a finished project people can sit down and play.
 
 A local browser-based Mafia party game prototype. It supports multiplayer rooms, configurable game rules, player accounts, and optional bot players.

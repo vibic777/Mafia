@@ -68,6 +68,10 @@ npm run restore -- data/backups/mafia-YYYY-MM-DDTHH-MM-SS-sssZ.sqlite
 cp .env.example .env
 # При первом открытии игры создайте аккаунт администратора в браузере.
 [Русский](README.md) · [English](README.en.md)
+
+**Лицензия:** [PolyForm Noncommercial 1.0.0](LICENSE). Некоммерческое использование разрешено. Коммерческое использование — только по отдельному соглашению с vibic777.
+**License:** [PolyForm Noncommercial 1.0.0](LICENSE). Noncommercial use is allowed. Commercial use requires a separate agreement with vibic777.
+
 docker compose up -d --build
 docker compose ps
 docker compose logs -f mafia
