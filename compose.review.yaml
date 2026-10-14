@@ -1,0 +1,21 @@
+services:
+  mafia-review:
+    image: ${MAFIA_REVIEW_IMAGE:-mafia-mvp:review}
+    build:
+      context: .
+    restart: unless-stopped
+    ports:
+      - "${MAFIA_REVIEW_PORT:-4445}:4444"
+    environment:
+      PORT: "4444"
+      MAFIA_DATA_DIR: /app/data
+      MAFIA_PUBLIC_URL: ${MAFIA_PUBLIC_URL:-}
+      MAFIA_ADMIN_USERNAME: ${MAFIA_REVIEW_ADMIN_USERNAME:-}
+      MAFIA_ADMIN_PASSWORD: ${MAFIA_REVIEW_ADMIN_PASSWORD:-}
+      MAFIA_BONUSES_ENABLED: "false"
+    volumes:
+      - mafia-review-data:/app/data
+    stop_grace_period: 15s
+
+volumes:
+  mafia-review-data:

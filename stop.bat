@@ -1,0 +1,7 @@
+@echo off
+setlocal
+set "MAFIA_PROJECT_DIR=%~dp0"
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$ErrorActionPreference = 'Stop'; $project = $env:MAFIA_PROJECT_DIR; $pidFile = Join-Path $project '.mafia-server.pid'; if (-not (Test-Path -LiteralPath $pidFile)) { Write-Output 'Mafia MVP server is not running through start.bat.'; exit 0 }; try { $marker = Get-Content -Raw -LiteralPath $pidFile | ConvertFrom-Json; $serverPid = [int]$marker.pid; $port = [int]$marker.port } catch { Write-Output 'Invalid server PID file; removing it.'; Remove-Item -LiteralPath $pidFile -Force; exit 1 }; $processInfo = Get-Process -Id $serverPid -ErrorAction SilentlyContinue; if ($null -eq $processInfo -or $processInfo.Path -notlike '*\node.exe') { Write-Output 'No matching Node.js process; removing stale PID file.'; Remove-Item -LiteralPath $pidFile -Force; exit 0 }; $pattern = '^\s*TCP\s+\S+:' + [regex]::Escape([string]$port) + '\s+\S+\s+LISTENING\s+' + $serverPid + '\s*$'; $isListener = netstat -ano -p tcp | Select-String -Pattern $pattern -Quiet; if (-not $isListener) { Write-Output 'The saved process is not listening on the saved port; refusing to stop it.'; Remove-Item -LiteralPath $pidFile -Force; exit 1 }; Stop-Process -Id $serverPid -Force; Remove-Item -LiteralPath $pidFile -Force; Write-Output 'Mafia MVP server stopped.'"
+if errorlevel 1 echo Could not stop the server. Try running this file as the same Windows user that started it.
+pause

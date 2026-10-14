@@ -1,0 +1,13 @@
+{
+  "name": "mafia-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A local browser Mafia game MVP",
+  "scripts": {
+    "start": "node server.js",
+    "backup": "node backup-db.js",
+    "restore": "node restore-db.js",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=22.13.0" }
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101111">
+  <title>Мафия — ночной город</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Мафия, на главную"><span class="brand-mark">М<span>•</span></span><span class="brand-word">ПОСЛЕДНИЙ<br>АРГУМЕНТ</span></a>
+    <div class="topbar-right"><button id="help-open" class="help-open" type="button" aria-haspopup="dialog">СПРАВКА</button><span class="local-label"><i></i> ЛОКАЛЬНАЯ ИГРА</span><span class="top-divider"></span><span class="edition">ПРОТОТИП № 01</span></div>
+  </header>
+
+  <main>
+    <section id="home" class="home-layout">
+      <div class="hero-copy">
+        <p class="eyebrow"><span>01</span> &nbsp;/&nbsp; ГОРОД НЕ СПИТ</p>
+        <h1>Город<br>помнит <em>всё.</em></h1>
+        <p class="hero-description">Ночью город молчит. Днём каждый голос может стать последним.<br>Системный ведущий следит за правилами.</p>
+        <div class="hero-footnote"><span class="footnote-line"></span><span>ИГРА ДЛЯ 6–20 УЧАСТНИКОВ · ВЕДУЩИЙ АВТОМАТИЧЕСКИЙ</span></div>
+      </div>
+      <div class="entry-card">
+        <div class="card-head"><span class="mono">НОВАЯ ИГРА</span><span class="card-index">M–01</span></div>
+        <div id="auth-panel">
+          <p id="setup-intro" class="hint hidden">Первый запуск. Создайте аккаунт администратора — отдельный пароль по умолчанию не используется.</p>
+          <div id="auth-tabs" class="tab-row"><button class="auth-tab active" data-auth-mode="login">Войти</button><button class="auth-tab" data-auth-mode="register">Регистрация</button></div>
+          <form id="auth-form">
+            <label for="auth-username">ЛОГИН</label><input id="auth-username" name="username" maxlength="24" autocomplete="username" required>
+            <div id="auth-email-wrap" class="hidden"><label for="auth-email" style="margin-top:14px">ЭЛЕКТРОННАЯ ПОЧТА</label><input id="auth-email" name="email" type="email" maxlength="254" autocomplete="email"><span class="hint">Для обычного аккаунта необязательно; для администратора — обязательно.</span></div>
+            <label for="auth-password" style="margin-top:14px">ПАРОЛЬ</label><input id="auth-password" name="password" type="password" minlength="1" maxlength="128" autocomplete="current-password" required>
+            <button id="auth-submit" class="primary-btn" type="submit"><span>Войти</span><span class="arrow">↗</span></button>
+            <p id="auth-error" class="form-error" role="alert"></p>
+          </form>
+          <button id="forgot-open" class="text-btn" type="button">ЗАБЫЛИ ПАРОЛЬ?</button>
+          <form id="forgot-form" class="hidden"><label for="forgot-email">ЭЛЕКТРОННАЯ ПОЧТА</label><input id="forgot-email" name="email" type="email" required><button class="target-btn" type="submit">ОТПРАВИТЬ ССЫЛКУ</button><p id="forgot-message" class="form-error" role="status"></p><button id="forgot-back" class="text-btn" type="button">← НАЗАД</button></form>
+          <form id="reset-form" class="hidden"><p class="hint">Задайте новый пароль для аккаунта.</p><label for="reset-password">НОВЫЙ ПАРОЛЬ</label><input id="reset-password" name="password" type="password" minlength="1" maxlength="128" required><button class="primary-btn" type="submit">СОХРАНИТЬ ПАРОЛЬ</button><p id="reset-message" class="form-error" role="alert"></p></form>
+        </div>
+        <div id="room-entry" class="hidden">
+          <div class="account-row"><span id="account-name"></span><span><button id="admin-open" class="text-btn hidden" type="button">АДМИНКА</button> <button id="logout" class="text-btn" type="button">ВЫЙТИ</button></span></div>
+          <div id="account-levels" class="account-levels"></div>
+          <p id="account-bonuses" class="hint"></p>
+          <div class="tab-row"><button class="tab active" data-mode="auto">Быстрый вход</button><button class="tab" data-mode="create">Создать комнату</button><button class="tab" data-mode="join">По коду</button></div>
+          <form id="entry-form">
+            <label for="player-name">ИГРОК</label><input id="player-name" name="name" maxlength="24" readonly>
+            <div id="code-wrap" class="code-wrap hidden"><label for="room-code">КОД КОМНАТЫ</label><input id="room-code" name="code" maxlength="6" placeholder="НАПРИМЕР, A4F21C" autocomplete="off"></div>
+            <button id="entry-submit" class="primary-btn" type="submit"><span>Найти игру</span><span class="arrow">↗</span></button>
+            <p id="entry-error" class="form-error" role="alert"></p>
+          </form>
+        </div>
+        <section id="admin-panel" class="admin-panel hidden">
+          <div class="panel-heading"><span>АДМИНИСТРАТИВНАЯ ПАНЕЛЬ</span><button id="admin-refresh" class="text-btn" type="button">ОБНОВИТЬ ↻</button></div>
+          <p id="admin-error" class="form-error" role="alert"></p>
+          <div class="admin-setting"><b class="admin-setting-title">НАБОР КОМНАТЫ И АВТОСТАРТ</b><label class="admin-toggle"><input id="auto-fill-bots" type="checkbox"> Если людей не хватило, автоматически добирать ботов</label><div class="lobby-setting-fields"><label for="human-wait-seconds">Сколько ждать людей (сек.)</label><input id="human-wait-seconds" type="number" min="1" max="86400" step="1"><label for="start-delay-seconds">Отсчёт до старта после набора (сек.)</label><input id="start-delay-seconds" type="number" min="0" max="86400" step="1"></div><button id="save-lobby-settings" class="target-btn" type="button">Сохранить правила набора</button><p class="hint">Параметры применяются и к уже открытым комнатам в ожидании. Выключите автодобор, чтобы ждать только людей.</p></div>
+          <div class="admin-setting"><label for="teasing-humor">ЮМОР С ЛЁГКИМИ ПОДКОЛАМИ</label><input id="teasing-humor" type="checkbox"><p class="hint">Добавляет ведущему добродушные шутливые реплики. Без политики, оскорблений и унижений. Сохраняется для всех комнат.</p></div>
+          <div class="admin-setting"><label class="admin-toggle"><input id="role-reveal-test-rooms" type="checkbox"> В тестовых комнатах раскрывать роль выбывшего</label><p class="hint">Скрытые до выбывания роли раскрываются только в отмеченной тестовой комнате. По умолчанию выключено.</p><button id="save-role-reveal" class="target-btn" type="button">СОХРАНИТЬ НАСТРОЙКУ</button></div>
+          <div class="admin-setting"><b class="admin-setting-title">КТО ВИДИТ РОЛИ ВЫБЫВШИХ</b><div class="lobby-setting-fields"><label for="mafia-kill-role-visibility">После ночного убийства мафии</label><select id="mafia-kill-role-visibility"><option value="none">Никто до конца партии</option><option value="team">Вся мафия</option><option value="killer">Только голосовавшие за эту цель</option></select><label for="town-vote-role-visibility">После исключения голосованием города</label><select id="town-vote-role-visibility"><option value="none">Никто до конца партии</option><option value="team">Все игроки города</option></select></div><button id="save-death-role-visibility" class="target-btn" type="button">СОХРАНИТЬ ПРАВИЛА РАСКРЫТИЯ</button><p class="hint">Настройка действует на все комнаты. По умолчанию роли до финала скрыты, кроме личных проверок комиссара, настроек тестовой комнаты и самого финала. «Голосовавшие за цель» — мафиози, чьи голоса выбрали погибшего игрока.</p></div>
+          <div class="admin-setting"><label class="admin-toggle"><input id="bonuses-enabled" type="checkbox"> Включить автоматическую выдачу бонусов</label><label for="bonus-interval-seconds">Интервал выдачи (секунд; 604800 = неделя)</label><input id="bonus-interval-seconds" type="number" min="3600" max="31536000" step="3600"><button id="save-bonus-settings" class="target-btn" type="button">СОХРАНИТЬ БОНУСЫ</button><p class="hint">Каждый бонус одноразовый и копится в профиле. Используйте его в подходящей фазе. Выдача выключена по умолчанию.</p></div>
+          <div class="admin-setting"><b class="admin-setting-title">ХАРАКТЕРЫ ТЕСТОВЫХ БОТОВ</b><p class="hint">При добавлении ботов каждый случайно получит один из отмеченных характеров. Меняется только стиль общения, не роль и не команда.</p><div class="bot-personality-options"><label><input type="checkbox" data-bot-personality="friendly"> Добрый</label><label><input type="checkbox" data-bot-personality="jokester"> Шутник</label><label><input type="checkbox" data-bot-personality="sharp"> Резкий</label><label><input type="checkbox" data-bot-personality="chaotic"> Хаотичный</label><label><input type="checkbox" data-bot-personality="gentle"> Мягкий</label></div><p class="hint">«Хаотичный» — эксцентричный игровой стиль, не медицинский диагноз. Подколы направлены на игровые версии, не на личные качества.</p></div>
+          <div class="admin-setting"><b class="admin-setting-title">ВОССТАНОВЛЕНИЕ ПАРОЛЯ · SMTP</b><p class="hint">Пароль сбрасывается по одноразовой ссылке на 30 минут, отправленной на почту аккаунта. Пароль SMTP хранится локально вместе с настройками игры.</p><div class="smtp-fields"><label>СЕРВЕР<input id="smtp-host" maxlength="253" placeholder="smtp.example.com"></label><label>ПОРТ<input id="smtp-port" type="number" min="1" max="65535" value="587"></label><label>ШИФРОВАНИЕ<select id="smtp-encryption"><option value="none">Без шифрования</option><option value="ssl">SSL/TLS</option><option value="starttls">STARTTLS</option></select></label><label>ЛОГИН SMTP<input id="smtp-username" maxlength="254" autocomplete="off"></label><label>ПАРОЛЬ SMTP<input id="smtp-password" type="password" maxlength="512" autocomplete="new-password" placeholder="Оставьте пустым, чтобы не менять"></label><label>ОТ КОГО<input id="smtp-from" type="email" maxlength="254" placeholder="mafia@example.com"></label></div><button id="save-smtp" class="target-btn" type="button">СОХРАНИТЬ SMTP</button><div class="smtp-test-row"><label>ТЕСТОВЫЙ АДРЕС<input id="smtp-test-email" type="email" placeholder="ваш@email.ru"></label><button id="test-smtp" class="text-btn" type="button">ОТПРАВИТЬ ПРОБНОЕ ПИСЬМО</button></div><p id="smtp-status" class="hint" role="status"></p></div>
+          <div id="admin-rooms"></div>
+          <div class="panel-heading admin-subhead"><span>АККАУНТЫ</span></div><div id="admin-accounts"></div>
+          <div class="panel-heading admin-subhead"><span>БЛОКИРОВКИ</span></div><div id="admin-bans"></div>
+          <div class="panel-heading admin-subhead"><span>ЖУРНАЛ ДЕЙСТВИЙ</span></div><div id="admin-audit"></div>
+          <button id="admin-back" class="text-btn" type="button">← НАЗАД К ИГРЕ</button>
+        </section>
+        <div class="card-bottom"><span>ЛОКАЛЬНО · НА ЭТОМ УСТРОЙСТВЕ</span><span>↗</span></div>
+      </div>
+      <div class="vertical-note">ТЬМА НЕ СПРАШИВАЕТ ИМЁН</div>
+    </section>
+
+    <section id="game" class="game-layout hidden">
+      <div class="game-heading">
+        <div><p id="phase-kicker" class="eyebrow"><span>ГОРОД</span> &nbsp;/&nbsp; ОЖИДАНИЕ</p><h1 id="phase-title">Все смотрят<br>на <em>ведущего.</em></h1></div>
+        <div class="room-stamp"><span class="mono">КОД КОМНАТЫ</span><button id="room-code-copy" class="room-code" title="Скопировать код">——<span>⧉</span></button><span id="copy-status" class="copy-status">НАЖМИТЕ, ЧТОБЫ СКОПИРОВАТЬ</span><button id="game-admin-open" class="text-btn hidden" type="button">АДМИНКА</button></div>
+      </div>
+      <div class="game-columns">
+        <section class="panel roster-panel"><div class="panel-heading"><span>УЧАСТНИКИ</span><span id="player-count" class="count">00 / 20</span></div><div id="roster" class="roster"></div>
+          <div id="role-card" class="role-card hidden"><span class="mono">ВАША РОЛЬ</span><div id="my-role" class="my-role">—</div><p id="role-description"></p></div>
+        </section>
+        <section class="panel action-panel"><div class="panel-heading"><span id="action-heading">ГОРОДСКАЯ СВОДКА</span><span id="day-label" class="count">ДЕНЬ 00</span></div><div id="action-content" class="action-content"></div>
+          <div class="log-wrap"><div class="panel-heading"><span>ХРОНИКА ГОРОДА</span><span class="live-dot"><i></i> LIVE</span></div><div id="log" class="log"></div></div>
+          <div class="panel-footer"><span>СЛЕДИТЕ ЗА СВОИМИ СЛОВАМИ</span><span>⟡</span></div>
+        </section>
+      </div>
+      <button id="leave-room" class="text-btn" type="button">← ВЕРНУТЬСЯ НА ГЛАВНУЮ</button>
+    </section>
+  </main>
+  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
+    <div class="help-heading"><div><p class="eyebrow">ПРАВИЛА · ВЕРСИЯ MVP</p><h2 id="help-title">Краткая <em>справка</em></h2></div><button id="help-close" class="text-btn" type="button" aria-label="Закрыть справку">ЗАКРЫТЬ ×</button></div>
+    <div class="help-content">
+      <section><h3>Цель игры</h3><p>Город ищет и исключает мафию. Мафия ночью устраняет жителей и старается сравняться числом с остальными живыми игроками.</p><ul><li><b>Город побеждает</b>, когда все мафиози выбыли.</li><li><b>Мафия побеждает</b>, когда мафиози не меньше, чем остальные живые игроки.</li></ul></section>
+      <section><h3>Комнаты и роли</h3><p>В партии от 6 до 20 игроков. Системный ведущий управляет игрой и не занимает место. По умолчанию комната ждёт людей 60 секунд, затем автоматически добирает ботов до 6 игроков. После наполнения идёт ещё 60 секунд до старта. Администратор может отключить автодобор и изменить оба интервала.</p><ul><li><b>Мафия:</b> молча голосует ночью за одного живого игрока не из своей команды.</li><li><b>Дон (тестовая роль от 10 игроков):</b> входит в состав мафии и ночью вместо голоса за жертву проверяет, является ли выбранный игрок комиссаром. Результат известен только дону.</li><li><b>Комиссар:</b> ночью проверяет одного другого живого игрока. Он видит её точную роль в личной карточке и журнале проверок до конца партии; эту информацию больше никто не видит.</li><li><b>Доктор:</b> с 8 игроков ночью защищает другого живого игрока. Нельзя лечить себя или одну цель две ночи подряд.</li><li><b>Мэр (тестовая роль от 10 игроков):</b> открыто объявляет роль; его голос весит два голоса со следующего голосования.</li><li><b>Мирный житель:</b> специальных ночных действий нет; помогает городу обсуждением и голосом.</li></ul><p>Число мафиози — один на каждые четыре места, минимум один; остальные места заполняются городскими ролями. Тестовые роли включает создатель комнаты до старта при помощи администратора. Конкретная роль раздаётся случайно. В списке игроков роль показана карточкой только её владельцу, а всем участникам — после финального раскрытия; раскрытие ролей выбывших отдельно настраивается для тестовой комнаты. У выбывшего игрока на раскрытой карточке стоит знак ☠.</p></section>
+      <section><h3>Как проходит день</h3><ol><li><b>Обсуждение — 3 минуты:</b> живые игроки свободно пишут в общий чат.</li><li><b>Выступления:</b> живые игроки говорят по очереди, до 30 секунд на игрока.</li><li><b>Голосование — 60 секунд:</b> выберите игрока; голос можно менять до конца таймера. Без голоса — воздержание.</li></ol><p>При ничьей лидеры голосуют повторно в течение 30 секунд. Если ничья повторится, никто не выбывает. Ночью общий чат закрыт.</p></section>
+      <section><h3>Выбывание и прогресс</h3><p>Выбывший игрок не голосует и не действует, но может наблюдать за хроникой. После завершённой партии участник получает +1 к шкале своей команды, победитель — ещё +1. Добровольный выход во время партии исключает начисление; административный кик — нет.</p><p>Уровни «Мирный» и «Мафия» растут отдельно от 0 до 100 и видны всем в составе комнаты и возле сообщений. Условная донат-настройка позволяет скрыть каждый показатель отдельно. На 100-м уровне шкалы можно до старта выбрать соответствующую команду; конкретная роль остаётся случайной.</p><ul><li><b>Дополнительное время:</b> один раз добавить 30 секунд свободного обсуждения.</li><li><b>Решающий голос:</b> один раз удвоить свой голос в текущем голосовании.</li><li><b>Защита от проверки:</b> один раз ночью скрыть свою команду от проверки комиссара или дона.</li></ul><p>Предметы выдаются автоматически только при включённой настройке администратора, накапливаются до применения и тратятся по одному. Порог каждые 10 уровней чередует три эффекта.</p></section>
+      <section><h3>Локальный администратор</h3><p>При первом запуске создайте аккаунт администратора на экране входа; укажите адрес электронной почты, пароля по умолчанию нет. Последующие регистрации получают права обычного игрока. В админке настраивается SMTP для сброса пароля по одноразовой ссылке, отправленной на почту аккаунта. Там же задаётся, кому раскрывается роль после ночного убийства или исключения голосованием: всей мафии, голосовавшим за жертву, всему городу или никому до финала. По умолчанию новые раскрытия выключены. Адрес игрока при регистрации необязателен. Администратор видит список комнат, дневную переписку, аккаунты и блокировки. Используйте прототип локально: история чата доступна администратору.</p></section>
+    </div>
+    <div class="help-footer"><span>Полный дизайн и решения: GAME_DESIGN.md</span><span>Ночная переписка запрещена</span></div>
+  </dialog>
+  <footer class="site-footer"><span>М • ПОСЛЕДНИЙ АРГУМЕНТ</span><span>ОДИН ГОРОД. СЛИШКОМ МНОГО ТАЙН.</span><span>ЛОКАЛЬНЫЙ ПРОТОТИП</span></footer>
+  <script src="/app.js"></script>
+</body>
+</html>

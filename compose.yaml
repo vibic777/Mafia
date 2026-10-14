@@ -1,0 +1,29 @@
+services:
+  mafia:
+    image: ${MAFIA_IMAGE:-mafia-mvp:local}
+    build:
+      context: .
+    restart: unless-stopped
+    ports:
+      - "${PORT:-4444}:4444"
+    environment:
+      PORT: "4444"
+      MAFIA_DATA_DIR: /app/data
+      MAFIA_PUBLIC_URL: ${MAFIA_PUBLIC_URL:-}
+      MAFIA_ADMIN_USERNAME: ${MAFIA_ADMIN_USERNAME:-}
+      MAFIA_ADMIN_PASSWORD: ${MAFIA_ADMIN_PASSWORD:-}
+      MAFIA_LOBBY_MS: ${MAFIA_LOBBY_MS:-60000}
+      MAFIA_NIGHT_MS: ${MAFIA_NIGHT_MS:-90000}
+      MAFIA_DISCUSSION_MS: ${MAFIA_DISCUSSION_MS:-180000}
+      MAFIA_SPEECH_MS: ${MAFIA_SPEECH_MS:-30000}
+      MAFIA_VOTE_MS: ${MAFIA_VOTE_MS:-60000}
+      MAFIA_REVOTE_MS: ${MAFIA_REVOTE_MS:-30000}
+      MAFIA_PRESENCE_TIMEOUT_MS: ${MAFIA_PRESENCE_TIMEOUT_MS:-5000}
+      MAFIA_BONUSES_ENABLED: ${MAFIA_BONUSES_ENABLED:-false}
+      MAFIA_BONUS_INTERVAL_SECONDS: ${MAFIA_BONUS_INTERVAL_SECONDS:-604800}
+    volumes:
+      - mafia-data:/app/data
+    stop_grace_period: 15s
+
+volumes:
+  mafia-data:
